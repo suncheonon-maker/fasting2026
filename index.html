@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 전북 CCC 금식수련회 등록</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap">
+<style>
+  /* 포스터 팔레트: 새벽 하늘, 인디고 타이틀, 페리윙클 산, 회색 바위 */
+  :root {
+    --ink: #1f1d3d; --muted: #5f6386; --line: #dcdcf0; --card: #fff;
+    --sky: #d6e8f8; --lavender: #e7e3f8; --dusk: #24263a;
+    --brand: #3a2b8c; --brand-2: #5a49c4; --brand-soft: #eceafb; --peri: #6f8ee8;
+    --sun: #fff4d6; --ok: #2f7d5a; --ok-soft: #e4f3ec; --warn: #a63d2f; --warn-soft: #fbece8;
+    --jeonju: #3a2b8c; --gunsan: #4c6fd6; --iksan: #3b3f55;
+    --display: "Anton", Pretendard, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: Pretendard, -apple-system, "Apple SD Gothic Neo", sans-serif; color: var(--ink); line-height: 1.55;
+    background: linear-gradient(180deg, var(--dusk) 0, var(--dusk) 420px, var(--lavender) 420px, var(--sky) 100%);
+    background-attachment: scroll; min-height: 100vh;
+  }
+  /* 포스터의 종이 질감 */
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: .07; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  header.hero { background: var(--dusk); }
+  .hero-art { position: relative; max-width: 720px; margin: 0 auto; }
+  .hero-art img { display: block; width: 100%; height: auto; aspect-ratio: 1314 / 1400; object-fit: cover; }
+  .hero-art::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 28%; background: linear-gradient(180deg, rgba(36,38,58,0), var(--dusk)); }
+  .hero-band { position: relative; z-index: 1; max-width: 720px; margin: -96px auto 0; padding: 0 16px 84px; text-align: center; color: #fff; }
+  .hero-band .eyebrow { font-family: var(--display); font-size: 15px; letter-spacing: .14em; color: #b9c6f5; }
+  .hero-band h1 { margin: 4px 0 6px; font-size: clamp(28px, 7.4vw, 44px); font-weight: 900; letter-spacing: -.02em; line-height: 1.15; }
+  .hero-band .meta { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 4px 12px; font-size: clamp(15px, 4vw, 19px); color: #e9ecff; }
+  .hero-band .meta span + span::before { content: "|"; margin-right: 12px; opacity: .5; }
+
+  main { margin-top: -56px; padding: 0 16px 48px; position: relative; }
+  nav.tabs { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--card); border-radius: 16px; padding: 6px; gap: 4px; box-shadow: 0 10px 30px rgba(36,38,58,.25); }
+  nav.tabs button { border: 0; background: none; padding: 12px 6px; border-radius: 12px; font: inherit; font-weight: 700; font-size: 15px; color: var(--muted); cursor: pointer; }
+  nav.tabs button[aria-selected="true"] { background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #fff; }
+  section.panel { display: none; margin-top: 18px; }
+  section.panel.active { display: block; }
+  .card { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 14px; box-shadow: 0 2px 10px rgba(58,43,140,.06); }
+  .card h2 { font-size: 18px; font-weight: 800; margin: 0 0 14px; color: var(--brand); }
+  .card h2 .num { display: inline-block; font-family: var(--display); font-weight: 400; font-size: 20px; color: var(--peri); margin-right: 8px; letter-spacing: .02em; }
+  label.field { display: block; margin-bottom: 14px; }
+  label.field > span { display: block; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  label.field small { font-weight: 400; color: var(--muted); }
+  input[type=text], input[type=tel], select, textarea { width: 100%; font: inherit; font-size: 16px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--brand-2); outline-offset: 1px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .choices { display: grid; gap: 8px; margin-bottom: 14px; }
+  .choices.inline { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  #districtChoices { grid-template-columns: repeat(3, 1fr); }
+  .choice { position: relative; display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); border-radius: 12px; padding: 12px; cursor: pointer; background: #fff; transition: border-color .15s, background .15s; }
+  .choice input { margin-top: 4px; accent-color: var(--brand); }
+  .choice:has(input:checked) { border-color: var(--brand-2); background: var(--brand-soft); box-shadow: inset 0 0 0 1px var(--brand-2); }
+  .choice.full { opacity: .5; cursor: not-allowed; }
+  .choice .t { font-weight: 700; }
+  .choice .s { font-size: 13px; color: var(--muted); }
+  .seat { margin-left: auto; font-size: 12px; font-weight: 600; white-space: nowrap; padding: 2px 8px; border-radius: 99px; background: var(--ok-soft); color: var(--ok); align-self: center; }
+  .seat.low { background: var(--warn-soft); color: var(--warn); }
+  .sub { font-size: 14px; font-weight: 800; margin: 6px 0 8px; color: var(--ink); }
+  .hidden { display: none !important; }
+  .btn { display: block; width: 100%; border: 0; border-radius: 14px; padding: 16px; font: inherit; font-size: 17px; font-weight: 800; background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #fff; cursor: pointer; box-shadow: 0 8px 20px rgba(58,43,140,.25); }
+  .btn:disabled { opacity: .5; cursor: wait; }
+  .msg { border-radius: 12px; padding: 12px 14px; font-size: 14px; margin-top: 12px; }
+  .msg.err { background: var(--warn-soft); color: #7d2a1e; }
+  .msg.ok { background: var(--ok-soft); color: #1f5a3f; }
+  .note { font-size: 13px; color: var(--muted); }
+  dl.result { display: grid; grid-template-columns: 96px 1fr; gap: 8px 12px; margin: 0; font-size: 15px; }
+  dl.result dt { color: var(--muted); }
+  dl.result dd { margin: 0; font-weight: 700; }
+  .status-big { font-size: 21px; font-weight: 900; color: var(--brand); margin-bottom: 12px; }
+  .status-big.no { color: var(--warn); }
+  .total { display: flex; align-items: baseline; gap: 8px; }
+  .total b { font-family: var(--display); font-weight: 400; font-size: 56px; line-height: 1; color: var(--brand); }
+  .total span { font-weight: 700; }
+  .dist-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .dist { border-radius: 16px; padding: 16px; color: #fff; position: relative; overflow: hidden; }
+  .dist::after { content: ""; position: absolute; right: -18px; bottom: -18px; width: 70px; height: 70px; border-radius: 50%; background: var(--sun); opacity: .18; }
+  .dist .n { font-family: var(--display); font-size: 40px; line-height: 1.05; }
+  .dist .n small { font-family: Pretendard, sans-serif; font-size: 16px; font-weight: 700; margin-left: 2px; }
+  .dist .l { font-size: 14px; font-weight: 700; opacity: .9; }
+  .dist .r { font-size: 12px; opacity: .85; margin-top: 4px; }
+  .bar-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; font-size: 14px; margin-bottom: 10px; }
+  .bar { grid-column: 1 / -1; height: 8px; background: var(--brand-soft); border-radius: 99px; overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: 99px; transition: width .4s; }
+  .tabular { font-variant-numeric: tabular-nums; color: var(--muted); }
+  .live { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); animation: pulse 2s infinite; }
+  @keyframes pulse { 50% { opacity: .3; } }
+  .demo { background: var(--sun); color: #6b5500; font-size: 13px; padding: 8px 16px; text-align: center; }
+  footer { text-align: center; font-size: 13px; color: var(--muted); padding: 0 16px 32px; }
+  footer .verse { font-family: var(--display); font-size: 18px; letter-spacing: .04em; color: var(--brand); margin-bottom: 4px; }
+  @media (max-width: 480px) { .dist-grid { grid-template-columns: 1fr; } .row2 { grid-template-columns: 1fr; } .hero-band { margin-top: -64px; } }
+  nav.tabs { grid-template-columns: repeat(4, 1fr); }
+  nav.tabs button { font-size: 14px; padding: 12px 2px; }
+  nav.tabs button .lock { font-size: 11px; display: block; font-weight: 600; opacity: .7; }
+  .info { display: grid; grid-template-columns: 72px 1fr; gap: 6px 12px; margin: 0; font-size: 15px; }
+  .info dt { color: var(--muted); }
+  .info dd { margin: 0; font-weight: 600; }
+  details.schedule { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+  details.schedule summary { cursor: pointer; font-weight: 800; color: var(--brand); }
+  .days { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-top: 12px; }
+  .day h3 { margin: 0 0 6px; font-size: 14px; color: var(--ink); }
+  .day ol { list-style: none; margin: 0; padding: 0; font-size: 13px; }
+  .day li { display: grid; grid-template-columns: 44px 1fr; gap: 6px; padding: 3px 0; border-bottom: 1px dashed var(--line); }
+  .day li b { font-variant-numeric: tabular-nums; color: var(--muted); font-weight: 600; }
+  .day li.hl { color: var(--brand); font-weight: 800; }
+  .day li.hl b { color: var(--brand); }
+  .lock-card { text-align: center; padding: 32px 20px; }
+  .lock-card .dday { font-family: var(--display); font-size: 64px; line-height: 1; color: var(--brand); }
+  .lock-card h2 { margin: 10px 0 6px; font-size: 20px; color: var(--ink); }
+  .who { border-radius: 12px; padding: 10px 12px; font-size: 14px; margin: -4px 0 14px; }
+  .who.ok { background: var(--ok-soft); color: #1f5a3f; }
+  .who.no { background: var(--warn-soft); color: #7d2a1e; }
+  .btn.ghost { background: #fff; color: var(--brand); box-shadow: inset 0 0 0 2px var(--brand-2); margin-top: 10px; }
+  .pill { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 99px; background: var(--brand-soft); color: var(--brand); }
+  @media (max-width: 400px) { nav.tabs button { font-size: 13px; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-art">
+    <img src="hero.jpg" alt="NO WAY? GOD'S WAY! 길이 없는 곳에 길을 만드시는 하나님 (사 43:18-21)">
+  </div>
+  <div class="hero-band">
+    <div class="eyebrow">JEONBUK CCC</div>
+    <h1 id="title">2026 전북 CCC 금식수련회</h1>
+    <div class="meta" id="meta"><span>12월 28일(월) – 30일(수)</span><span>청정인성수련원</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="register" aria-selected="true">수련회 등록</button>
+    <button role="tab" data-tab="lecture" aria-selected="false">선택특강<span class="lock" id="lectureTabNote"></span></button>
+    <button role="tab" data-tab="check" aria-selected="false">등록 확인</button>
+    <button role="tab" data-tab="stats" aria-selected="false">현황</button>
+  </nav>
+
+  <!-- 수련회 등록 -->
+  <section class="panel active" id="panel-register">
+    <div class="card">
+      <h2>수련회 안내</h2>
+      <dl class="info" id="infoList"></dl>
+      <details class="schedule" id="scheduleBox">
+        <summary>전체 일정표 보기</summary>
+        <div class="days" id="scheduleDays"></div>
+      </details>
+    </div>
+
+    <form id="regForm" novalidate>
+      <div class="card">
+        <h2><span class="num">1</span>소속</h2>
+        <span class="sub">지구</span>
+        <div class="choices inline" id="districtChoices"></div>
+        <label class="field"><span>캠퍼스</span>
+          <select name="campus" id="campusSelect" required><option value="">지구를 먼저 선택해 주세요</option></select>
+        </label>
+      </div>
+
+      <div class="card">
+        <h2><span class="num">2</span>기본 정보</h2>
+        <div class="row2">
+          <label class="field"><span>이름</span><input type="text" name="name" autocomplete="name" required maxlength="20"></label>
+          <label class="field"><span>학번 <small>(예: 25)</small></span><input type="text" name="studentNo" inputmode="numeric" maxlength="2" required></label>
+        </div>
+        <label class="field"><span>연락처 <small>수련회 안내에만 사용합니다</small></span>
+          <input type="tel" name="phone" placeholder="010-1234-5678" inputmode="tel" autocomplete="tel" required></label>
+        <span class="sub">성별</span>
+        <div class="choices inline">
+          <label class="choice"><input type="radio" name="gender" value="남" required><span class="t">남</span></label>
+          <label class="choice"><input type="radio" name="gender" value="여"><span class="t">여</span></label>
+        </div>
+        <span class="sub">순장 임명 여부</span>
+        <div class="choices inline">
+          <label class="choice"><input type="radio" name="role" value="순장" required><span class="t">순장</span></label>
+          <label class="choice"><input type="radio" name="role" value="순원, 예비 순장"><span class="t">순원, 예비 순장</span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="num">3</span>건강</h2>
+        <p class="note" style="margin-top:0">식전·식후에 복용해야 하는 약이 있어 섭식이 필요한 경우 '예'를 선택해 주세요.</p>
+        <div class="choices inline">
+          <label class="choice"><input type="radio" name="needsMeal" value="아니오" checked><span class="t">아니오</span></label>
+          <label class="choice"><input type="radio" name="needsMeal" value="예"><span class="t">예, 섭식이 필요해요</span></label>
+        </div>
+        <label class="field hidden" id="healthNoteField"><span>필요한 내용을 적어 주세요</span>
+          <textarea name="healthNote" rows="2" maxlength="200"></textarea></label>
+      </div>
+
+      <p class="note" id="lectureHint"></p>
+      <button class="btn" type="submit" id="submitBtn">수련회 등록하기</button>
+      <p class="note">이미 등록했다면 같은 이름과 연락처로 다시 제출하면 내용이 수정됩니다.</p>
+      <div id="regMsg"></div>
+    </form>
+  </section>
+
+  <!-- 선택특강 -->
+  <section class="panel" id="panel-lecture">
+    <div id="lectureBefore" class="card lock-card hidden">
+      <div class="dday" id="lectureDday"></div>
+      <h2 id="lectureOpenText"></h2>
+      <p class="note">수련회 등록을 먼저 해 두면, 신청이 열린 뒤 이름과 연락처만으로 바로 특강을 고를 수 있어요.</p>
+      <button class="btn ghost" type="button" data-goto="register">수련회 등록하러 가기</button>
+    </div>
+    <div id="lectureClosed" class="card lock-card hidden">
+      <h2>선택특강 신청이 마감되었습니다</h2>
+      <p class="note">신청한 특강은 '등록 확인' 탭에서 볼 수 있어요.</p>
+    </div>
+
+    <form id="lectureForm" class="hidden" novalidate>
+      <div class="card">
+        <h2><span class="num">1</span>본인 확인</h2>
+        <p class="note" style="margin-top:0">수련회 등록 때 쓴 이름과 연락처를 입력해 주세요.</p>
+        <div class="row2">
+          <label class="field"><span>이름</span><input type="text" name="name" autocomplete="name" required maxlength="20"></label>
+          <label class="field"><span>연락처</span><input type="tel" name="phone" placeholder="010-1234-5678" inputmode="tel" autocomplete="tel" required></label>
+        </div>
+        <div id="whoBox"></div>
+      </div>
+      <div class="card">
+        <h2><span class="num">2</span>선택특강 <small class="note" id="lectureTime"></small></h2>
+        <div class="choices inline">
+          <label class="choice"><input type="radio" name="mode" value="연강" required><span><span class="t">연강</span><br><span class="s">이틀 동안 같은 강의</span></span></label>
+          <label class="choice"><input type="radio" name="mode" value="단강"><span><span class="t">단강</span><br><span class="s">날마다 다른 강의</span></span></label>
+        </div>
+        <div id="modeBoth" class="hidden">
+          <div class="sub">연강 특강</div>
+          <div class="choices" id="bothChoices"></div>
+        </div>
+        <div id="modeSingle" class="hidden">
+          <div class="sub" id="day1Label">1일차</div>
+          <div class="choices" id="day1Choices"></div>
+          <div class="sub" id="day2Label">2일차</div>
+          <div class="choices" id="day2Choices"></div>
+        </div>
+      </div>
+      <button class="btn" type="submit" id="lectureBtn">선택특강 신청하기</button>
+      <p class="note">신청 기간 안에는 같은 방법으로 다시 신청하면 강의를 바꿀 수 있어요.</p>
+      <div id="lectureMsg"></div>
+    </form>
+  </section>
+
+  <!-- 등록 확인 -->
+  <section class="panel" id="panel-check">
+    <div class="card">
+      <h2>내 등록 확인하기</h2>
+      <form id="checkForm">
+        <div class="row2">
+          <label class="field"><span>이름</span><input type="text" name="name" required></label>
+          <label class="field"><span>연락처 뒤 4자리</span><input type="text" name="phone4" inputmode="numeric" maxlength="4" required></label>
+        </div>
+        <button class="btn" type="submit">확인하기</button>
+      </form>
+      <p class="note">개인정보 보호를 위해 이름과 연락처 뒤 4자리가 모두 맞아야 결과가 보입니다.</p>
+    </div>
+    <div id="checkResult"></div>
+  </section>
+
+  <!-- 현황 -->
+  <section class="panel" id="panel-stats">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+        <div class="total"><b id="statTotal">-</b><span>명 등록</span></div>
+        <span class="live" id="statUpdated">불러오는 중</span>
+      </div>
+    </div>
+    <div class="dist-grid" id="distGrid"></div>
+    <div class="card" style="margin-top:14px"><h2>캠퍼스별</h2><div id="campusBars"></div></div>
+    <div class="card hidden" id="lectureStatCard"><h2>선택특강 신청 <span class="pill" id="lectureDone"></span></h2><div id="lectureBars"></div></div>
+  </section>
+</main>
+<footer id="footer"></footer>
+
+<script>
+// ▼ Apps Script 웹 앱 배포 URL (…/exec)
+const API_URL = 'https://script.google.com/macros/s/AKfycbz_zliml04feq4HOMP8DMbqKdZDsDs38vTRHPgEAcFsDnRuEcn4JrbkO4X-ldVFkyE_Iw/exec';
+const REFRESH_MS = 30000;
+const DISTRICTS = ['전주', '군산', '익산'];
+const DIST_COLOR = { 전주: 'var(--jeonju)', 군산: 'var(--gunsan)', 익산: 'var(--iksan)' };
+
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+let config = null;
+
+/* ---------- API ---------- */
+async function apiGet(params) {
+  const res = await fetch(API_URL + '?' + new URLSearchParams(params));
+  return res.json();
+}
+async function apiPost(body) {
+  // text/plain 으로 보내야 Apps Script 에서 CORS 사전요청 없이 받을 수 있습니다
+  const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
+  return res.json();
+}
+
+/* ---------- 공통 ---------- */
+function kDate(ymd) {
+  if (!ymd) return '';
+  return new Date(ymd + 'T00:00:00+09:00').toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short', timeZone: 'Asia/Seoul' });
+}
+function daysUntil(ymd) {
+  const today = new Date(new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' }) + 'T00:00:00+09:00');
+  return Math.round((new Date(ymd + 'T00:00:00+09:00') - today) / 86400000);
+}
+function formatPhoneInput(el) {
+  el.addEventListener('input', () => {
+    const n = el.value.replace(/\D/g, '').slice(0, 11);
+    el.value = n.length > 7 ? `${n.slice(0, 3)}-${n.slice(3, 7)}-${n.slice(7)}` : n.length > 3 ? `${n.slice(0, 3)}-${n.slice(3)}` : n;
+  });
+}
+
+/* ---------- 탭 ---------- */
+document.querySelectorAll('nav.tabs button').forEach(btn => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
+document.addEventListener('click', e => { const g = e.target.closest('[data-goto]'); if (g) showTab(g.dataset.goto); });
+function showTab(name) {
+  document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === name));
+  document.querySelectorAll('section.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
+  if (name === 'stats') loadStats();
+  history.replaceState(null, '', '#' + name);
+  window.scrollTo({ top: $('nav.tabs').offsetTop - 12, behavior: 'smooth' });
+}
+
+/* ---------- 설정 ---------- */
+async function loadConfig() {
+  const data = await apiGet({ action: 'config' });
+  if (!data.ok) throw new Error(data.error);
+  config = data;
+  const s = data.settings;
+  $('#title').textContent = s.title;
+  document.title = s.title + ' 등록';
+  $('#meta').innerHTML = [s.dates, s.place].filter(Boolean).map(t => `<span>${esc(t)}</span>`).join('');
+  $('#footer').innerHTML = `<div class="verse">NO WAY? GOD'S WAY!</div>길이 없는 곳에 길을 만드시는 하나님 · 사 43:18-21` +
+    (s.contact ? `<br>문의: ${esc(s.contact)}` : '');
+
+  // 수련회 안내
+  const info = [['일시', s.dates], ['장소', [s.place, s.address].filter(Boolean).join(' · ')], ['회비', s.feeNotice],
+    ['선택특강', s.lectureStart ? `${kDate(s.lectureStart)}부터 신청${s.lectureEnd ? ` (${kDate(s.lectureEnd)}까지)` : ''}` : '']];
+  $('#infoList').innerHTML = info.filter(x => x[1]).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('');
+  $('#scheduleDays').innerHTML = data.schedule.map(d => `<div class="day"><h3>${esc(d.day)}</h3><ol>` +
+    d.items.map(x => `<li class="${x.item.includes('선택특강') ? 'hl' : ''}"><b>${esc(x.time)}</b><span>${esc(x.item)}</span></li>`).join('') +
+    '</ol></div>').join('');
+  $('#scheduleBox').classList.toggle('hidden', !data.schedule.length);
+
+  $('#districtChoices').innerHTML = DISTRICTS.map(d =>
+    `<label class="choice"><input type="radio" name="district" value="${d}" required><span class="t">${d}</span></label>`).join('');
+  if (!s.open) { $('#submitBtn').disabled = true; $('#submitBtn').textContent = '등록이 마감되었습니다'; }
+
+  // 선택특강 상태
+  $('#day1Label').textContent = s.day1Label;
+  $('#day2Label').textContent = s.day2Label;
+  $('#lectureTime').textContent = s.lectureTime;
+  const st = s.lectureState;
+  $('#lectureBefore').classList.toggle('hidden', st !== 'before');
+  $('#lectureClosed').classList.toggle('hidden', st !== 'closed');
+  $('#lectureForm').classList.toggle('hidden', st !== 'open');
+  $('#lectureTabNote').textContent = st === 'before' ? (s.lectureStart ? s.lectureStart.slice(5).replace('-', '/') + ' 오픈' : '준비 중') : st === 'closed' ? '마감' : '';
+  if (st === 'before') {
+    const n = s.lectureStart ? daysUntil(s.lectureStart) : null;
+    $('#lectureDday').textContent = n === null ? '' : n > 0 ? 'D-' + n : 'D-DAY';
+    $('#lectureOpenText').textContent = s.lectureStart ? `${kDate(s.lectureStart)}부터 신청할 수 있어요` : '신청 일정은 곧 안내됩니다';
+    $('#lectureHint').textContent = s.lectureStart ? `선택특강 신청은 ${kDate(s.lectureStart)}부터 '선택특강' 탭에서 따로 받습니다. 지금은 수련회 등록만 해 주세요.` : '';
+  } else {
+    $('#lectureHint').textContent = st === 'open' ? '수련회 등록 후 \'선택특강\' 탭에서 특강을 신청해 주세요.' : '';
+  }
+  renderLectures();
+}
+
+function lectureChoice(name, l) {
+  const full = l.remaining === 0;
+  const seat = l.capacity === null ? '' :
+    `<span class="seat ${l.remaining <= 5 ? 'low' : ''}">${full ? '마감' : '잔여 ' + l.remaining}</span>`;
+  return `<label class="choice ${full ? 'full' : ''}"><input type="radio" name="${name}" value="${esc(l.title)}" ${full ? 'disabled' : ''}>
+    <span><span class="t">${esc(l.title)}</span>${l.speaker ? `<br><span class="s">${esc(l.speaker)}</span>` : ''}</span>${seat}</label>`;
+}
+
+function renderLectures(mine = {}) {
+  const groups = [['lectureBoth', '연강', '#bothChoices'], ['lectureDay1', '1일차', '#day1Choices'], ['lectureDay2', '2일차', '#day2Choices']];
+  groups.forEach(([name, type, sel]) => {
+    const prev = mine[name] || $(`#lectureForm input[name="${name}"]:checked`)?.value;
+    $(sel).innerHTML = config.lectures[type].map(l => {
+      // 본인이 이미 가진 자리는 정원이 차도 선택 가능
+      const own = mine[name] === l.title;
+      return lectureChoice(name, own ? { ...l, remaining: l.remaining === 0 ? 1 : l.remaining } : l);
+    }).join('') || '<p class="note">준비 중입니다.</p>';
+    if (prev) { const el = $(`#lectureForm input[name="${name}"][value="${CSS.escape(prev)}"]`); if (el && !el.disabled) el.checked = true; }
+  });
+}
+
+/* ---------- 수련회 등록 ---------- */
+const form = $('#regForm');
+formatPhoneInput(form.elements['phone']);
+form.addEventListener('change', e => {
+  if (e.target.name === 'district') {
+    const list = config.campuses[e.target.value] || [];
+    $('#campusSelect').innerHTML = '<option value="">캠퍼스를 선택해 주세요</option>' + list.map(c => `<option>${esc(c)}</option>`).join('');
+  }
+  if (e.target.name === 'needsMeal') $('#healthNoteField').classList.toggle('hidden', e.target.value !== '예');
+});
+
+function validateReg(d) {
+  if (!d.district) return '지구를 선택해 주세요.';
+  if (!d.campus) return '캠퍼스를 선택해 주세요.';
+  if (!d.name) return '이름을 입력해 주세요.';
+  if (!/^\d{2}$/.test(d.studentNo || '')) return '학번은 두 자리 숫자로 입력해 주세요. (예: 25)';
+  if (!/^010-\d{4}-\d{4}$/.test(d.phone || '')) return '연락처를 010-1234-5678 형식으로 입력해 주세요.';
+  if (!d.gender) return '성별을 선택해 주세요.';
+  if (!d.role) return '순장 여부를 선택해 주세요.';
+  return '';
+}
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(form));
+  Object.keys(d).forEach(k => d[k] = String(d[k]).trim());
+  const err = validateReg(d);
+  const box = $('#regMsg');
+  if (err) { box.innerHTML = `<div class="msg err">${esc(err)}</div>`; return; }
+  const btn = $('#submitBtn');
+  btn.disabled = true; btn.textContent = '등록 중…';
+  try {
+    const r = await apiPost({ action: 'register', ...d });
+    if (!r.ok) throw new Error(r.error);
+    let next = '';
+    if (r.lectureState === 'before') next = `<br>선택특강 신청은 <b>${esc(kDate(r.lectureStart))}</b>부터 '선택특강' 탭에서 받아요. 그때 꼭 신청해 주세요!`;
+    if (r.lectureState === 'open' && !r.hasLecture) next = `<button class="btn ghost" type="button" id="goLecture">이어서 선택특강 신청하기</button>`;
+    box.innerHTML = `<div class="msg ok"><b>${esc(d.name)}</b>님, ${r.updated ? '등록 내용이 수정되었습니다.' : '수련회 등록이 완료되었습니다!'}
+      ${r.feeNotice ? '<br>' + esc(r.feeNotice) : ''}${next}</div>`;
+    $('#goLecture')?.addEventListener('click', () => {
+      const lf = $('#lectureForm');
+      lf.elements['name'].value = d.name; lf.elements['phone'].value = d.phone;
+      showTab('lecture'); checkWho();
+    });
+  } catch (ex) {
+    box.innerHTML = `<div class="msg err">${esc(ex.message || '등록 중 문제가 생겼습니다. 잠시 후 다시 시도해 주세요.')}</div>`;
+  } finally {
+    btn.disabled = !config?.settings.open; btn.textContent = '수련회 등록하기';
+  }
+});
+
+/* ---------- 선택특강 신청 ---------- */
+const lform = $('#lectureForm');
+formatPhoneInput(lform.elements['phone']);
+let whoTimer = null;
+['name', 'phone'].forEach(n => lform.elements[n].addEventListener('input', () => { clearTimeout(whoTimer); whoTimer = setTimeout(checkWho, 500); }));
+
+// 이름 + 연락처가 다 입력되면 등록 여부를 확인하고, 이미 신청한 특강이 있으면 불러온다
+async function checkWho() {
+  const name = lform.elements['name'].value.trim(), phone = lform.elements['phone'].value.trim();
+  const box = $('#whoBox');
+  if (!name || !/^010-\d{4}-\d{4}$/.test(phone)) { box.innerHTML = ''; return; }
+  try {
+    const r = await apiGet({ action: 'lookup', name, phone4: phone.slice(-4) });
+    if (!r.ok) throw new Error(r.error);
+    if (!r.found) {
+      box.innerHTML = `<div class="who no">수련회 등록 내역이 없어요. <a href="#register" data-goto="register">수련회 등록</a>을 먼저 해 주세요.</div>`;
+      return;
+    }
+    const x = r.records[0];
+    box.innerHTML = `<div class="who ok">등록 확인: ${esc(x.district)} · ${esc(x.campus)}${x.mode ? ' · 이미 신청한 특강이 있어 불러왔어요. 바꾸려면 다시 고르세요.' : ''}</div>`;
+    if (x.mode) {
+      const m = lform.querySelector(`input[name="mode"][value="${x.mode}"]`);
+      if (m) { m.checked = true; m.dispatchEvent(new Event('change', { bubbles: true })); }
+      renderLectures({ lectureBoth: x.lectureBoth, lectureDay1: x.lectureDay1, lectureDay2: x.lectureDay2 });
+    }
+  } catch { box.innerHTML = ''; }
+}
+
+lform.addEventListener('change', e => {
+  if (e.target.name === 'mode') {
+    $('#modeBoth').classList.toggle('hidden', e.target.value !== '연강');
+    $('#modeSingle').classList.toggle('hidden', e.target.value !== '단강');
+  }
+});
+
+lform.addEventListener('submit', async e => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(lform));
+  Object.keys(d).forEach(k => d[k] = String(d[k]).trim());
+  let err = '';
+  if (!d.name) err = '이름을 입력해 주세요.';
+  else if (!/^010-\d{4}-\d{4}$/.test(d.phone || '')) err = '연락처를 010-1234-5678 형식으로 입력해 주세요.';
+  else if (!d.mode) err = '연강 또는 단강을 선택해 주세요.';
+  else if (d.mode === '연강' && !d.lectureBoth) err = '연강 특강을 선택해 주세요.';
+  else if (d.mode === '단강' && (!d.lectureDay1 || !d.lectureDay2)) err = '날짜별 특강을 모두 선택해 주세요.';
+  const box = $('#lectureMsg');
+  if (err) { box.innerHTML = `<div class="msg err">${esc(err)}</div>`; return; }
+  const btn = $('#lectureBtn');
+  btn.disabled = true; btn.textContent = '신청 중…';
+  try {
+    const r = await apiPost({ action: 'lecture', ...d });
+    if (!r.ok) throw new Error(r.error);
+    const what = d.mode === '연강' ? `연강 · ${d.lectureBoth}` : `${config.settings.day1Label} ${d.lectureDay1} / ${config.settings.day2Label} ${d.lectureDay2}`;
+    box.innerHTML = `<div class="msg ok"><b>${esc(d.name)}</b>님, 선택특강이 ${r.updated ? '변경' : '신청'}되었습니다.<br>${esc(what)}</div>`;
+  } catch (ex) {
+    box.innerHTML = `<div class="msg err">${esc(ex.message || '신청 중 문제가 생겼습니다. 잠시 후 다시 시도해 주세요.')}</div>`;
+  } finally {
+    btn.disabled = false; btn.textContent = '선택특강 신청하기';
+    loadConfig().catch(() => {});
+  }
+});
+
+/* ---------- 등록 확인 ---------- */
+$('#checkForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = e.target.elements['name'].value.trim(), phone4 = e.target.elements['phone4'].value.trim();
+  const out = $('#checkResult');
+  out.innerHTML = '<div class="card note">확인 중…</div>';
+  try {
+    const r = await apiGet({ action: 'lookup', name, phone4 });
+    if (!r.ok) throw new Error(r.error);
+    if (!r.found) {
+      out.innerHTML = `<div class="card"><div class="status-big no">등록 내역이 없어요</div>
+        <p class="note">이름과 연락처 뒤 4자리를 다시 확인해 주세요. 그래도 없다면 '수련회 등록' 탭에서 등록해 주세요.</p></div>`;
+      return;
+    }
+    const s = config?.settings || {};
+    out.innerHTML = r.records.map(x => {
+      let lec;
+      if (x.mode === '연강') lec = `<dt>선택특강</dt><dd>연강 · ${esc(x.lectureBoth)}</dd>`;
+      else if (x.mode === '단강') lec = `<dt>${esc(s.day1Label)}</dt><dd>${esc(x.lectureDay1)}</dd><dt>${esc(s.day2Label)}</dt><dd>${esc(x.lectureDay2)}</dd>`;
+      else {
+        const when = s.lectureState === 'before' ? `${esc(kDate(s.lectureStart))}부터 신청 가능` :
+          s.lectureState === 'open' ? `<a href="#lecture" data-goto="lecture">지금 신청하기</a>` : '신청 마감';
+        lec = `<dt>선택특강</dt><dd>아직 신청 전 <span class="note">(${when})</span></dd>`;
+      }
+      return `<div class="card"><div class="status-big">수련회 등록이 되어 있어요</div>
+      <dl class="result">
+        <dt>이름</dt><dd>${esc(x.name)}</dd>
+        <dt>소속</dt><dd>${esc(x.district)} · ${esc(x.campus)}</dd>
+        ${lec}
+        <dt>회비</dt><dd>${esc(x.paid)}</dd>
+        <dt>등록일</dt><dd>${esc(x.registeredAt)}</dd>
+      </dl></div>`;
+    }).join('');
+  } catch (ex) {
+    out.innerHTML = `<div class="card msg err">${esc(ex.message)}</div>`;
+  }
+});
+
+/* ---------- 현황 ---------- */
+let statsTimer = null;
+async function loadStats() {
+  clearTimeout(statsTimer);
+  try {
+    const s = await apiGet({ action: 'stats' });
+    if (!s.ok) throw new Error(s.error);
+    $('#statTotal').textContent = s.total;
+    $('#statUpdated').textContent = s.updatedAt + ' 기준';
+    $('#distGrid').innerHTML = DISTRICTS.map(d => {
+      const x = s.districts[d];
+      return `<div class="dist" style="background:${DIST_COLOR[d]}"><div class="l">${d}지구</div><div class="n">${x.total}<small>명</small></div>
+        <div class="r">순장 ${x.leader} · 순원 ${x.member}</div></div>`;
+    }).join('');
+    const campusRows = DISTRICTS.flatMap(d => Object.entries(s.districts[d].campuses).map(([c, n]) => ({ d, c, n })))
+      .sort((a, b) => b.n - a.n);
+    const max = Math.max(1, ...campusRows.map(r => r.n));
+    $('#campusBars').innerHTML = campusRows.length ? campusRows.map(r => `<div class="bar-row"><span>${esc(r.c)} <span class="note">${r.d}</span></span>
+      <span class="tabular">${r.n}명</span><div class="bar"><i style="width:${r.n / max * 100}%;background:${DIST_COLOR[r.d]}"></i></div></div>`).join('')
+      : '<p class="note">아직 등록자가 없습니다.</p>';
+
+    const showLectures = config && config.settings.lectureState !== 'before';
+    $('#lectureStatCard').classList.toggle('hidden', !showLectures);
+    if (showLectures) {
+      $('#lectureDone').textContent = `${s.lectureDone} / ${s.total}명`;
+      const label = { 연강: '연강', '1일차': config.settings.day1Label, '2일차': config.settings.day2Label };
+      $('#lectureBars').innerHTML = Object.entries(s.lectures).map(([type, list]) => list.length ? `<div class="sub">${esc(label[type])}</div>` +
+        list.map(l => {
+          const base = l.capacity || Math.max(1, ...list.map(x => x.taken));
+          return `<div class="bar-row"><span>${esc(l.title)}</span><span class="tabular">${l.taken}${l.capacity ? ' / ' + l.capacity : ''}명</span>
+            <div class="bar"><i style="width:${Math.min(100, l.taken / base * 100)}%;background:var(--brand)"></i></div></div>`;
+        }).join('') : '').join('');
+    }
+  } catch (ex) {
+    $('#statUpdated').textContent = '불러오기 실패, 다시 시도 중';
+  }
+  if ($('#panel-stats').classList.contains('active')) statsTimer = setTimeout(loadStats, REFRESH_MS);
+}
+
+/* ---------- 시작 ---------- */
+const start = location.hash.slice(1);
+loadConfig()
+  .then(() => { if (['register', 'lecture', 'check', 'stats'].includes(start)) showTab(start); })
+  .catch(ex => { $('#regMsg').innerHTML = `<div class="msg err">정보를 불러오지 못했습니다. 새로고침해 주세요. (${esc(ex.message)})</div>`; });
+</script>
+</body>
+</html>
