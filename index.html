@@ -118,7 +118,7 @@
   .lock-card { text-align: center; padding: 32px 20px; }
   .lock-card .dday { font-family: var(--display); font-size: 64px; line-height: 1; color: var(--brand); }
   .lock-card h2 { margin: 10px 0 6px; font-size: 20px; color: var(--ink); }
-  .who { border-radius: 12px; padding: 10px 12px; font-size: 14px; margin: -4px 0 14px; }
+  .who { border-radius: 12px; padding: 10px 12px; font-size: 14px; margin: -4px 0 14px; background: var(--brand-soft); color: var(--brand); }
   .who.ok { background: var(--ok-soft); color: #1f5a3f; }
   .who.no { background: var(--warn-soft); color: #7d2a1e; }
   .btn.ghost { background: #fff; color: var(--brand); box-shadow: inset 0 0 0 2px var(--brand-2); margin-top: 10px; }
@@ -294,14 +294,28 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 let config = null;
 
 /* ---------- API ---------- */
-async function apiGet(params) {
-  const res = await fetch(API_URL + '?' + new URLSearchParams(params));
-  return res.json();
+// Apps Script 요청이 가끔 응답 없이 멈춰서, 정해진 시간이 지나면 끊고 다시 시도한다.
+// 등록·특강 신청은 같은 이름+연락처 줄을 덮어쓰므로 다시 보내도 중복으로 쌓이지 않는다.
+async function fetchRetry(url, opts, timeoutMs, tries) {
+  for (let i = 1; ; i++) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, { ...opts, signal: ctrl.signal });
+      return await res.json();
+    } catch (e) {
+      if (i >= tries) throw new Error('서버 응답이 늦어요. 잠시 후 다시 시도해 주세요.');
+    } finally {
+      clearTimeout(timer);
+    }
+  }
 }
-async function apiPost(body) {
+function apiGet(params) {
+  return fetchRetry(API_URL + '?' + new URLSearchParams(params), {}, 7000, 5);
+}
+function apiPost(body) {
   // text/plain 으로 보내야 Apps Script 에서 CORS 사전요청 없이 받을 수 있습니다
-  const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
-  return res.json();
+  return fetchRetry(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) }, 12000, 4);
 }
 
 /* ---------- 공통 ---------- */
@@ -459,8 +473,18 @@ async function checkWho() {
   const name = lform.elements['name'].value.trim(), phone = lform.elements['phone'].value.trim();
   const box = $('#whoBox');
   if (!name || !/^010-\d{4}-\d{4}$/.test(phone)) { box.innerHTML = ''; return; }
+  const key = name + phone;
+  box.innerHTML = '<div class="who">등록 내역 확인 중…</div>';
+  // Apps Script 응답이 가끔 느려서, 15초가 넘으면 기다리지 않고 안내만 한다 (신청 버튼은 서버에서 다시 확인)
+  const slow = setTimeout(() => {
+    if (lform.elements['name'].value.trim() + lform.elements['phone'].value.trim() === key) {
+      box.innerHTML = '<div class="who">확인이 늦어지고 있어요. 강의를 고르고 바로 신청하기를 눌러도 됩니다.</div>';
+    }
+  }, 20000);
   try {
     const r = await apiGet({ action: 'lookup', name, phone4: phone.slice(-4) });
+    clearTimeout(slow);
+    if (lform.elements['name'].value.trim() + lform.elements['phone'].value.trim() !== key) return; // 그사이 입력이 바뀜
     if (!r.ok) throw new Error(r.error);
     if (!r.found) {
       box.innerHTML = `<div class="who no">수련회 등록 내역이 없어요. <a href="#register" data-goto="register">수련회 등록</a>을 먼저 해 주세요.</div>`;
@@ -473,7 +497,7 @@ async function checkWho() {
       if (m) { m.checked = true; m.dispatchEvent(new Event('change', { bubbles: true })); }
       renderLectures({ lectureBoth: x.lectureBoth, lectureDay1: x.lectureDay1, lectureDay2: x.lectureDay2 });
     }
-  } catch { box.innerHTML = ''; }
+  } catch { clearTimeout(slow); box.innerHTML = ''; }
 }
 
 lform.addEventListener('change', e => {
