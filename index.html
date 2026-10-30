@@ -175,6 +175,7 @@
         </div>
         <label class="field"><span>연락처 <small>수련회 안내에만 사용합니다</small></span>
           <input type="tel" name="phone" placeholder="010-1234-5678" inputmode="tel" autocomplete="tel" required></label>
+        <div id="regWho"></div>
         <span class="sub">성별</span>
         <div class="choices inline">
           <label class="choice"><input type="radio" name="gender" value="남" required><span class="t">남</span></label>
@@ -200,7 +201,7 @@
 
       <p class="note" id="lectureHint"></p>
       <button class="btn" type="submit" id="submitBtn">수련회 등록하기</button>
-      <p class="note">이미 등록했다면 같은 이름과 연락처로 다시 제출하면 내용이 수정됩니다.</p>
+      <p class="note">이름과 연락처를 입력하면 이미 등록했는지 바로 알려 드려요. 같은 이름과 연락처로 다시 제출하면 새로 등록되지 않고 내용만 수정됩니다.</p>
       <div id="regMsg"></div>
     </form>
   </section>
@@ -422,6 +423,46 @@ form.addEventListener('change', e => {
   if (e.target.name === 'needsMeal') $('#healthNoteField').classList.toggle('hidden', e.target.value !== '예');
 });
 
+// 이름 + 연락처를 다 입력하면 이미 등록했는지 확인해서 알려 준다 (등록하고 잊어버린 학생용)
+let regExisting = false, regTimer = null;
+['name', 'phone'].forEach(n => form.elements[n].addEventListener('input', () => { clearTimeout(regTimer); regTimer = setTimeout(checkRegistered, 600); }));
+
+function setSubmitLabel() {
+  const btn = $('#submitBtn');
+  if (!btn.disabled) btn.textContent = regExisting ? '등록 내용 수정하기' : '수련회 등록하기';
+}
+
+async function checkRegistered() {
+  const name = form.elements['name'].value.trim(), phone = form.elements['phone'].value.trim();
+  const box = $('#regWho');
+  regExisting = false; setSubmitLabel();
+  if (!name || !/^010-\d{4}-\d{4}$/.test(phone)) { box.innerHTML = ''; return; }
+  const key = name + phone;
+  try {
+    const r = await apiGet({ action: 'lookup', name, phone4: phone.slice(-4) });
+    if (form.elements['name'].value.trim() + form.elements['phone'].value.trim() !== key) return; // 그사이 입력이 바뀜
+    if (!r.ok || !r.found) { box.innerHTML = ''; return; }
+    const x = r.records[0], s = config?.settings || {};
+    regExisting = true; setSubmitLabel();
+    const lectureBtn = s.lectureState === 'open'
+      ? `<button class="btn ghost" type="button" data-goto-lecture>${x.mode ? '선택특강 확인·변경하기' : '선택특강 신청하기'}</button>` : '';
+    box.innerHTML = `<div class="msg ok" style="margin:-4px 0 14px">
+      <b>이미 수련회 등록이 되어 있어요!</b><br>
+      ${esc(x.name)} · ${esc(x.district)} · ${esc(x.campus)} · ${esc(x.registeredAt)} 등록<br>
+      <span class="note">다시 등록하지 않아도 됩니다. 정보를 고칠 때만 아래 내용을 수정해서 '등록 내용 수정하기'를 눌러 주세요.</span>
+      <button class="btn ghost" type="button" data-goto="check">내 등록 내용 보기</button>${lectureBtn}</div>`;
+    box.querySelector('[data-goto="check"]').addEventListener('click', () => {
+      const cf = $('#checkForm');
+      cf.elements['name'].value = name; cf.elements['phone4'].value = phone.slice(-4);
+      setTimeout(() => cf.requestSubmit(), 0);
+    });
+    box.querySelector('[data-goto-lecture]')?.addEventListener('click', () => {
+      lform.elements['name'].value = name; lform.elements['phone'].value = phone;
+      showTab('lecture'); checkWho();
+    });
+  } catch { box.innerHTML = ''; }
+}
+
 function validateReg(d) {
   if (!d.district) return '지구를 선택해 주세요.';
   if (!d.campus) return '캠퍼스를 선택해 주세요.';
@@ -445,10 +486,11 @@ form.addEventListener('submit', async e => {
   try {
     const r = await apiPost({ action: 'register', ...d });
     if (!r.ok) throw new Error(r.error);
+    regExisting = true; $('#regWho').innerHTML = '';
     let next = '';
     if (r.lectureState === 'before') next = `<br>선택특강 신청은 <b>${esc(kDate(r.lectureStart))}</b>부터 '선택특강' 탭에서 받아요. 그때 꼭 신청해 주세요!`;
     if (r.lectureState === 'open' && !r.hasLecture) next = `<button class="btn ghost" type="button" id="goLecture">이어서 선택특강 신청하기</button>`;
-    box.innerHTML = `<div class="msg ok"><b>${esc(d.name)}</b>님, ${r.updated ? '등록 내용이 수정되었습니다.' : '수련회 등록이 완료되었습니다!'}
+    box.innerHTML = `<div class="msg ok"><b>${esc(d.name)}</b>님, ${r.updated ? '이미 등록되어 있어서 새로 등록하지 않고 <b>등록 내용만 수정</b>했어요.' : '수련회 등록이 완료되었습니다!'}
       ${r.feeNotice ? '<br>' + esc(r.feeNotice) : ''}${next}</div>`;
     $('#goLecture')?.addEventListener('click', () => {
       const lf = $('#lectureForm');
@@ -458,7 +500,8 @@ form.addEventListener('submit', async e => {
   } catch (ex) {
     box.innerHTML = `<div class="msg err">${esc(ex.message || '등록 중 문제가 생겼습니다. 잠시 후 다시 시도해 주세요.')}</div>`;
   } finally {
-    btn.disabled = !config?.settings.open; btn.textContent = '수련회 등록하기';
+    btn.disabled = !config?.settings.open;
+    setSubmitLabel();
   }
 });
 
